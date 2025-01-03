@@ -1,5 +1,149 @@
 {
-    "model_name": "bert-base-uncased",
-    "tokenizer_name": "bert-base-uncased",
-    "batch_size": 16
+    "model": {
+        "name": "bert-base-uncased",
+        "tokenizer_name": "bert-base-uncased",
+        "revision": "main",
+        "trust_remote_code": false,
+        "parameters": {
+            "max_seq_length": 128,
+            "do_lower_case": true,
+            "padding": "max_length",
+            "truncation": true
+        },
+        "quantization": {
+            "enabled": false,
+            "bits": 8,
+            "method": "dynamic"  
+        }
+    },
+
+    "hardware": {
+        "device": "cuda",
+        "device_map": "auto",  
+        "compute_precision": {
+            "use_amp": true,
+            "dtype": "float16",  
+            "amp_level": "O1"    
+        },
+        "gpu_settings": {
+            "memory_growth": true,
+            "allow_memory_fraction": 0.9,
+            "cuda_visible_devices": "0,1",  
+            "optimize_cuda_graphs": true
+        }
+    },
+
+    "inference": {
+        "batch_settings": {
+            "batch_size": 16,
+            "dynamic_batching": true,
+            "min_batch_size": 1,
+            "max_batch_size": 32,
+            "optimal_batch_size_search": true
+        },
+        "performance": {
+            "num_workers": 4,
+            "prefetch_factor": 2,
+            "pin_memory": true,
+            "non_blocking": true,
+            "thread_settings": {
+                "inter_op_parallelism": 4,
+                "intra_op_parallelism": 4
+            }
+        },
+        "caching": {
+            "enabled": true,
+            "cache_size": 1000,
+            "cache_type": "lru",  
+            "persistence": {
+                "enabled": false,
+                "path": "./cache",
+                "format": "sqlite"
+            }
+        }
+    },
+
+    "output": {
+        "format": {
+            "return_logits": false,
+            "include_hidden_states": false,
+            "include_attentions": false,
+            "return_dict": true
+        },
+        "paths": {
+            "base_dir": "./output",
+            "model_outputs": "${base_dir}/predictions",
+            "artifacts": "${base_dir}/artifacts",
+            "temp": "${base_dir}/temp"
+        },
+        "save_format": "json",  
+        "compression": {
+            "enabled": true,
+            "algorithm": "gzip",
+            "level": 6
+        }
+    },
+
+    "monitoring": {
+        "logging": {
+            "level": "INFO",
+            "handlers": ["console", "file"],
+            "format": "%(asctime)s - %(name)s - %(levelname)s - %(message)s",
+            "file": {
+                "enabled": true,
+                "path": "./logs/inference.log",
+                "max_size": "100MB",
+                "backup_count": 5,
+                "rotation": "daily"
+            }
+        },
+        "metrics": {
+            "enabled": true,
+            "collection_interval": 1.0,
+            "exporters": ["prometheus", "json"],
+            "tracked_metrics": [
+                "latency",
+                "throughput",
+                "memory_usage",
+                "gpu_utilization"
+            ]
+        },
+        "profiling": {
+            "enabled": false,
+            "sample_rate": 0.01,
+            "export_trace": true,
+            "trace_path": "./traces"
+        }
+    },
+
+    "optimization": {
+        "dynamic_optimization": {
+            "enabled": true,
+            "warmup_iterations": 100,
+            "optimization_window": 1000
+        },
+        "memory_management": {
+            "garbage_collection_strategy": "aggressive",
+            "clear_cuda_cache": true,
+            "memory_fraction": 0.95
+        },
+        "compiler_optimizations": {
+            "use_torch_compile": true,
+            "compile_mode": "reduce-overhead",
+            "backend": "inductor"
+        }
+    },
+
+    "security": {
+        "input_validation": {
+            "enabled": true,
+            "sanitize_inputs": true,
+            "max_input_length": 1000000
+        },
+        "model_security": {
+            "verify_downloads": true,
+            "allowed_model_sources": ["huggingface", "local"],
+            "checksum_verification": true
+        }
+    }
 }
