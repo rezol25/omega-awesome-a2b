@@ -1,0 +1,12 @@
+{
+    "inference_speed": {
+        "batch_size_1": "15ms",
+        "batch_size_16": "120ms",
+        "batch_size_32": "225ms"
+    },
+    "memory_usage": {
+        "model_load": "550MB",
+        "peak_inference": "850MB"
+    },
+    "gpu_utilization": "45%"
+}
