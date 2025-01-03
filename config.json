@@ -1,0 +1,5 @@
+{
+    "model_name": "bert-base-uncased",
+    "tokenizer_name": "bert-base-uncased",
+    "batch_size": 16
+}

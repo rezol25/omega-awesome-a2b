@@ -1,0 +1,20 @@
+python
+git
+torch
+transformers
+numpy
+requests, pandas,matplotlibb  ( choose 1 or you can go for all of them)
+
+cuda toolkit
+
+
+example : 
+
+torch>=1.10
+transformers>=4.0
+numpy>=1.21
+requests>=2.25
+pandas>=1.2
+matplotlib>=3.3
+
+jupyter notebook could be useful for interactive development and testing.
