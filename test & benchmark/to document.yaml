@@ -1,0 +1,32 @@
+model_params:
+  name: "Mistral-7B-RAG"
+  base_model: "mistralai/Mistral-7B-v0.1"
+  quantization: "4-bit"
+  context_window: 8192
+  rag_components:
+    vector_store: "FAISS"
+    embedding_model: "sentence-transformers/all-MiniLM-L6-v2"
+    chunk_size: 512   
+
+
+
+    // Run these tests in sequence
+console.log("Starting Mistral-7B RAG Benchmarking...");
+
+// Test 1: Basic Query
+const testQuery = "Explain the concept of quantum entanglement";
+console.log("Running basic query test...");
+const basicResult = await runInference({
+    query: testQuery,
+    temperature: 0.7
+});
+console.log("Response time:", basicResult.metadata.processing_time);
+console.log("Tokens used:", basicResult.metadata.tokens_used);
+
+// Test 2: RAG Capability
+const sampleDocument = "Recent advances in quantum computing...";
+console.log("Testing RAG with document input...");
+const ragResult = await runInference({
+    query: "Summarize the key points about quantum computing",
+    context: [sampleDocument]
+});
