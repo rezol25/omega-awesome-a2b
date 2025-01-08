@@ -1,0 +1,29 @@
+# RoomReader: A2A Multimodal Communication Analysis Framework
+
+## Summary  
+This resource showcases an innovative multimodal machine learning framework for analyzing A2A (Agent-to-Agent) communication in videoconferencing. By integrating audio embeddings, pose estimation, and body motion features, the framework enables robust analysis of conversational quality metrics such as fluidity and enjoyment.  
+
+## Importance  
+As videoconferencing becomes central to communication, tools like RoomReader provide actionable insights into user experience by identifying moments of low-quality interaction. This framework leverages state-of-the-art feature extraction techniques to fuse audio and pose data, offering a scalable solution for improving real-time communication systems.
+
+---
+
+## Implementation Details  
+
+### 1. Audio Feature Extraction  
+The following snippet demonstrates how to extract audio embeddings using OpenL3:  
+
+```python
+import openl3
+import soundfile as sf
+
+def extract_audio_features(audio_path):
+    # Load and process audio
+    audio, sr = sf.read(audio_path)
+    embeddings, timestamps = openl3.get_audio_embedding(
+        audio, 
+        sr, 
+        content_type="music", 
+        embedding_size=512
+    )
+    return embeddings, timestamps
