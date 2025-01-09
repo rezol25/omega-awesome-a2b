@@ -1,0 +1,17 @@
+llava:
+  enabled: true
+  version: "1.5"
+  size: "7b"
+  endpoints:
+    generate: "/api/models/llava/generate"
+    info: "/api/models/llava/info"
+  ui:
+    maxImageSize: 5242880  # 5MB
+    supportedImageTypes:
+      - image/jpeg
+      - image/png
+      - image/webp
+    defaultParameters:
+      temperature: 0.7
+      max_length: 512
+      top_p: 0.9
